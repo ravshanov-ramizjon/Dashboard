@@ -11,8 +11,13 @@
 <body>
 
     <div class="header">
-        <div class="title">Dashboard</div>
-        <button id="openCreateModalButton" class="add-task-button">Добавить задачу</button>
+        <div class="left">
+            <div class="title">Dashboard</div>
+            <button id="openCreateModalButton" class="add-task-button">Добавить задачу</button>
+        </div>
+        <div class="right">
+            <input class="searchInput" type="search" placeholder="Поиск по задачам ">
+        </div>
     </div>
 
     <div class="viewOptions">
@@ -73,7 +78,7 @@
                 <input type="text" id="createTaskTitle" name="title" required>
 
                 <label for="createTaskDescription">Описание:</label>
-                <textarea id="createTaskDescription" name="description" required></textarea>
+                <input id="createTaskDescription" name="description" required></input>
 
                 <label for="createTaskDate">Дата:</label>
                 <input type="date" id="createTaskDate" name="date" required>

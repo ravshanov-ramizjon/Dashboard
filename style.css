@@ -7,16 +7,41 @@
 
 body {
     background-color: #f5f7fa;
+    font-weight: bold;
 }
 
 .header {
     display: flex;
     align-items: center;
-    gap: 26px;
+justify-content: space-between;
     padding: 20px;
     background-color: #fff;
 }
-
+.left{
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+.right{
+    display: flex;
+    align-items: center;
+    input{
+        display: flex;
+        text-align: center;
+        border-radius: 10px;
+        width: 189px;
+            height: 46px;
+            top: 86px;
+            left: 1225px;
+            gap: 0px;
+            border: 1px solid border #0000004D;
+            opacity: 0px;
+            placeholder{
+                color: #979797;
+            }
+    }
+    
+}
 .title {
     font-size: 2em;
     font-weight: bold;
@@ -66,7 +91,9 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
 }
-
+tr{
+    height: 97px;
+}
 th,
 td {
     padding: 12px;
@@ -126,6 +153,7 @@ td {
 .grid-item .date,
 .grid-item .time,
 .grid-item .status {
+    width: 100%;
     font-size: 0.9em;
     color: #666;
     margin-bottom: 6px;

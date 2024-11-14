@@ -68,6 +68,8 @@ export function createTaskTable(tasks) {
         const timeCell = document.createElement('td');
         const statusCell = document.createElement('td');
 
+        descriptionCell.style.width = "40%";
+
         titleCell.textContent = task.title;
         descriptionCell.textContent = task.description;
         dateCell.textContent = task.date;
@@ -114,7 +116,7 @@ function openModal(task) {
 
         updateTaskOnServer(task);
 
-        updateTaskDisplay();
+        updateTaskDisplay(tasks);
         modal.style.display = 'none';
     };
 }
@@ -136,18 +138,70 @@ function updateTaskOnServer(task) {
         });
 }
 
-function updateTaskDisplay() {
+function updateTaskDisplay(tasks) {
     const tableContainer = document.querySelector('#taskTable');
     const gridContainer = document.querySelector('.grid-container');
 
     tableContainer.querySelector('tbody').innerHTML = '';
     gridContainer.innerHTML = '';
 
-    fetch("http://localhost:3001/tasks")
-        .then(res => res.json())
-        .then(data => {
-            createTaskTable(data);
-        });
+    tasks.forEach(task => {
+        const row = document.createElement('tr');
+        const titleCell = document.createElement('td');
+        const descriptionCell = document.createElement('td');
+        const dateCell = document.createElement('td');
+        const timeCell = document.createElement('td');
+        const statusCell = document.createElement('td');
+
+        descriptionCell.style.width = "40%";
+
+        titleCell.textContent = task.title;
+        descriptionCell.textContent = task.description;
+        dateCell.textContent = task.date;
+        timeCell.textContent = task.time;
+        statusCell.textContent = task.status;
+
+        statusCell.classList.add('status');
+
+        if (task.status === "Не выполнено") {
+            statusCell.classList.add('not-completed');
+        } else if (task.status === "Готово") {
+            statusCell.classList.add('completed');
+        } else if (task.status === "В прогрессе") {
+            statusCell.classList.add('in-progress');
+        }
+
+        row.append(titleCell, descriptionCell, dateCell, timeCell, statusCell);
+        tableContainer.querySelector('tbody').append(row);
+
+        row.ondblclick = () => openModal(task);
+
+        const gridItem = document.createElement('div');
+        gridItem.classList.add('grid-item');
+
+        const title = document.createElement('div');
+        const description = document.createElement('div');
+        const date = document.createElement('div');
+        const time = document.createElement('div');
+        const status = document.createElement('div');
+
+        title.classList.add('title');
+        description.classList.add('description');
+        date.classList.add('date');
+        time.classList.add('time');
+        status.classList.add('status', task.status.replace(' ', '-').toLowerCase());
+
+        title.textContent = task.title;
+        description.textContent = task.description;
+        date.textContent = `Дата: ${task.date}`;
+        time.textContent = `Время: ${task.time}`;
+        status.textContent = task.status;
+
+        gridItem.append(title, description, date, time, status);
+        gridContainer.append(gridItem);
+
+        gridItem.ondblclick = () => openModal(task);
+    });
 }
 
 document.querySelector('.close').onclick = () => {
@@ -198,3 +252,15 @@ function createTaskOnServer(task) {
             console.error('Error creating task:', error);
         });
 }
+
+const searchInput = document.querySelector(".searchInput");
+
+searchInput.oninput = function() {
+    const query = searchInput.value.toLowerCase();
+    fetch("http://localhost:3001/tasks")
+        .then(res => res.json())
+        .then(tasks => {
+            const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(query));
+            updateTaskDisplay(filteredTasks);
+        });
+};
